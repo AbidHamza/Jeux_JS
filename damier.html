@@ -1,0 +1,34 @@
+<html>
+  <head>
+   <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+   <meta content="utf-8" http-equiv="encoding">
+     <script src="https://d3js.org/d3.v5.min.js"></script>
+     <script type="text/javascript" language="javascript" src="data.json"></script>
+     <script>
+     
+     function genereDamier(rayon, nbLignes, nbColonnes) {
+      d3.select("#damier").append("svg").attr("width", 1500).attr("height", 900);   
+      for(var x=0; x<nbColonnes; x++){
+            for(var y=0; y<nbLignes; y++){   
+               d3.select("svg")
+               .append("rect")
+               .attr("x", rayon*x)
+               .attr("y", rayon*y)
+               .attr("width", rayon)
+               .attr("height", rayon)
+               .style("fill", "white")
+               .style("stroke", "black")
+               .on ("click", function() {
+                  d3.select(this).style("fill", "red")
+
+               });
+            }
+      }          
+    }
+    </script>
+   <script src="modele.js"></script>   
+  </head>
+  <body onLoad="genereDamier(20, 12, 13)">
+     <div id="damier"></div>
+  </body>
+</html>
