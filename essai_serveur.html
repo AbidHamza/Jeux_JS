@@ -7,7 +7,7 @@
      <script>
        window.addEventListener("DOMContentLoaded", (event) => {
         var choix = document.getElementById("lvl-select");
-        choix.addEventListener("change", function(){
+        choix.addEventListener("click", function(){
           // Appel du serveur pour qu'il nous envoie le modèle enrgistré dans niveau1.json
          $.getJSON("http://localhost:8888/niveau/"+choix.value, function(data) {
              // Ouvrir la console du navigateur pour vérifier que cela fonctionne
