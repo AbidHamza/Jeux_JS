@@ -7,15 +7,57 @@
      <script>
        window.addEventListener("DOMContentLoaded", (event) => {
         var choix = document.getElementById("lvl-select");
-        choix.addEventListener("click", function(){
+        choix.addEventListener("change", function(){
           // Appel du serveur pour qu'il nous envoie le modèle enrgistré dans niveau1.json
          $.getJSON("http://localhost:8888/niveau/"+choix.value, function(data) {
              // Ouvrir la console du navigateur pour vérifier que cela fonctionne
+            d3.selectAll("circle").remove();
+            var start = genereModele(data,72, 12, 13);
+            console.log(start)
+            var svg = d3.select("#damier").select("svg")
+            var circle = svg.append("svg:circle")
+              .attr("cy", start[1]+pas/2)
+              .attr("cx", start[0]+pas/2)
+              .attr("r",10)
+              .attr("id","avatar")
+              .attr("fill","yellow");
+            d3.select("body").on("keydown",function(){
+              // console.log(d3.event.keyCode)
+              var avatar_x = parseInt(d3.select("#avatar").attr("cx")/pas);
+              var avatar_y = parseInt(d3.select("#avatar").attr("cy")/pas);
+              var up = data[avatar_y-1][avatar_x];
+              var down = data[avatar_y+1][avatar_x];
+              var right = data[avatar_y][avatar_x+1];
+              var left = data[avatar_y][avatar_x-1];
+        
+                switch(d3.event.keyCode){
+                  case 68 :
+                    if (right!=1 && right!=5){
+                      droit();}
+                  break;//d
+                  case 83 :
+                    if (down!=1 && down!=5){
+                      bas();}
+                  break;//s
+                  case 65 :
+                    if (left!=1 && left!=5){
+                      gauche();}
+                  break;//q
+                  case 87 :
+                    if (up!=1 && up!=5){
+                      haut();}
+                  break;//z
+                }
               
-             genereModele(data,50, 12, 13);
-
+              
+            });
+            
+             
         })
       });
+
+
+        
 
        $().ready(function() {
        //var modele = [[2, 1, 1, 1, 1, 1, 1, 4, 1, 1, 1, 1, 1],[2, 1, 0, 3, 0, 1, 1, 5, 1, 0, 0, 3, 1],[2, 1, 0, 7, 0, 1, 0, 0, 1, 0, 7, 0, 1],[2, 1, 0, 0, 0, 1, 0, 3, 1, 0, 0, 0, 1],[1, 1, 5, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1],[1, 0, 0, 7, 0, 1, 0, 0, 6, 0, 0, 0, 1],[1, 0, 7, 7, 0, 6, 0, 0, 1, 0, 0, 3, 1],[1, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1],[1, 1, 1, 6, 1, 1, 0, 0, 1, 0, 3, 0, 1],[2, 2, 1, 0, 7, 1, 0, 0, 6, 0, 0, 0, 1],[2, 2, 1, 7, 3, 1, 0, 0, 1, 0, 0, 8, 1],[2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]
@@ -30,9 +72,10 @@
       <script src="damier.js"></script>
 
   </head>
-  <body onLoad="genereDamier(50, 12, 13)">
+  <body onLoad="genereDamier(72, 12, 13)">
+    
     <div id="choixlvl">
-      <label for="lvl-select">Choose a level:</label>
+      <label for="select">Choose a level:</label>
       <select name="level" id="lvl-select">
           <option value="" selected>--Please choose a level--</option>
           <option value="1">Level 1</option>
