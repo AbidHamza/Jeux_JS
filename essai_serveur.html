@@ -22,7 +22,6 @@
               .attr("id","avatar")
               .attr("fill","yellow");
             d3.select("body").on("keydown",function(){
-              // console.log(d3.event.keyCode)
               var avatar_x = parseInt(d3.select("#avatar").attr("cx")/pas);
               var avatar_y = parseInt(d3.select("#avatar").attr("cy")/pas);
               var up = data[avatar_y-1][avatar_x];
