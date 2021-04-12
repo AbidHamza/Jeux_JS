@@ -17,6 +17,7 @@ function genereDamier(rayon, nbLignes, nbColonnes) {
              .style("fill", "white")    
              .style("stroke", "black");    
           } 
+
     }   
                 
 }   
@@ -24,7 +25,7 @@ function creeCarre(x,y,rayon){
     let d='M'+x+' '+y+' H '+rayon*x+' V '+rayon*y+' H '+x+' Z';     
     return d;   
 }   
-    
+
 function genereModele(data,rayon, nbLignes, nbColonnes){    
     
             
@@ -97,7 +98,7 @@ function bas(){
     
 }   
 //q 
-function gauche(){  
+function gauche(callback){  
     var circle=d3.select("#avatar");    
     var newx = parseInt(circle.attr("cx"))-(pas);    
     //console.log(newx);    
@@ -105,7 +106,8 @@ function gauche(){
     var r = parseInt(circle.attr("r"));  
     if (Math.min(newx,width-r)>0){   
         circle.attr("cx",Math.min(newx,width-r));    
-    }   
+    }  
+    setTimeout(""+callback(),100 );
 }   
 //x 
 function haut(){    
@@ -118,16 +120,64 @@ function haut(){
         circle.attr("cy",Math.min(newy,height-r));   
     }   
 }   
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+function genereInventaire(rayon,nbLignes,nbColonnes){
+    let width = nbColonnes*rayon;   
+    let height = nbLignes*rayon;
+    var svg = d3.select("#inventaire").append("svg").attr("width", width).attr("height", height).attr("id","invent");
+    for(var x=0; x<nbColonnes; x++){    
+        for(var y=0; y<nbLignes; y++){    
+           d3.select("#invent")   
+           .append("rect")    
+           .attr("x", rayon*x)    
+           .attr("y", rayon*y)    
+           .attr("width", rayon)  
+           .attr("height", rayon) 
+           .style("fill", "white")    
+           .style("stroke", "black")
+           .attr("id",couteau.nom);    
+        } 
+  } 
+}
+
+
+function genereInventaireCase(rayon,nbLignes,nbColonnes){
+    let width = nbColonnes*rayon;   
+    let height = nbLignes*rayon;
+    var svg = d3.select("#inventaire_case").append("svg").attr("width", width).attr("height", height).attr("id","loot");
+    for(var x=0; x<nbColonnes; x++){    
+        for(var y=0; y<nbLignes; y++){    
+           d3.select("#loot")   
+           .append("rect")    
+           .attr("x", rayon*x)    
+           .attr("y", rayon*y)    
+           .attr("width", rayon)  
+           .attr("height", rayon) 
+           .style("fill", "white")    
+           .style("stroke", "black");    
+        } 
+  } 
+}
+
+function genereBarreVie(widthe,heighte){
+    d3.select("#barreVie")
+    .append("svg")
+    .attr("width",widthe)
+    .attr("height",heighte)
+    .attr("id","vie")
+    .style("fill", "green")    
+    .style("stroke", "black"); 
+}
+
+function interaction(data){
+     if (data==3){
+        alert("meuble")
+        
+     }
+     if (data==7){
+        alert("piege")
+     }
+     if (data==5){
+        alert("porte verrouillée")
+     }
+}
