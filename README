@@ -1,0 +1,10 @@
+le projet est organisé sous forme plusieurs fichiers: 
+- dossier niveaux : il reçois des fichier sous format json ( envoyé par le serveur  aprés un submit dans l'editeur)
+-dossier public : 
+      -editeur : -dossier images : contients les images utilisé dans le jeux 
+                 -damier.js: contient nos fonction javascript 
+                 -index.html: contient l'interface html de l'éditeur 
+      -index.html: interface du jeu au point du vue utilisateur 
+-package.json: description sous forme json (il ya tous les dependances) utiliser par npm ( gestionnaire de paquets officiel de Node.js)
+-server.js : serveur qui serve sous 2 route : -/game 
+                                             -/editeur
