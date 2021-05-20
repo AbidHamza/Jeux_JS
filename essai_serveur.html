@@ -29,33 +29,45 @@
               var down = data[avatar_y+1][avatar_x];
               var right = data[avatar_y][avatar_x+1];
               var left = data[avatar_y][avatar_x-1];
-               
-        
+
+              let imd =""+(avatar_y+1)+""+avatar_x
+              let imu =""+(avatar_y-1)+avatar_x
+              let imr =""+avatar_y+(avatar_x+1)
+              let iml =""+avatar_y+(avatar_x-1)
+              console.log(""+avatar_y+avatar_x)
+                
                 switch(d3.event.keyCode){
                   case 68 :
-                    if (right!=1 && right!=5){
+                    if (right.type!=1 && right.type!=5){
                       droit()
-                      
+                      clearLoot()
                     }
-                    interaction(right)
+                    interaction(right,imr)
                   break;//d
                   case 83 :
-                    if (down!=1 && down!=5){
+                    if (down.type!=1 && down.type!=5){
+                      im = ""+avatar_y+1+avatar_x
                       bas()
+                      clearLoot()
+
                       
                     }
-                    interaction(down)
+                    interaction(down,imd)
                   break;//s
                   case 81 :
-                    if (left!=1 && left!=5){
-                      gauche(function(){interaction(left);});
+                    if (left.type!=1 && left.type!=5){
+                      gauche()
+                      clearLoot()
                     }
+                    interaction(left,iml)
+
                   break;//q
                   case 90 :
-                    if (up!=1 && up!=5){
+                    if (up.type!=1 && up.type!=5){
                       haut()
+                      clearLoot()
                       }
-                    interaction(up)
+                    interaction(up,imu)
                   break;//z
                   
                 }
@@ -68,6 +80,7 @@
       });
 
 
+
         
 
        $().ready(function() {
@@ -78,19 +91,17 @@
 
          
          });
-       });
+  });
       </script>
-      <script src="damier.js"></script>
       <script src="ressources.js"></script>
+      <script src="damier.js"></script>
       <script src = "barre_de_vie.js"></script>
+      <script src = "gameplay.js"></script>
       <style type="text/css">
 
-        .progress{
-        margin-left: 1100px; position : absolute; top : 100px
-        }
         </style>
   </head>
-  <body onLoad="genereDamier(72,12,13), genereInventaire(100,2,5), genereInventaireCase(100,2,5),genereBarreVie(200,50),healthBar()">
+  <body onLoad="genereDamier(72,12,13), genereInventaire(100,2,5), genereInventaireCase(100,2,5),healthBarr()">
     
     <div id="choixlvl">
       <label for="select">Choose a level:</label>
@@ -101,14 +112,59 @@
       </select>
     </div>
     <br>
-    <input type="number" id="number" style = "margin-left: 1100px; position : absolute; top : 70px" value="100">
-    </input>
-    <div id="barreVie" style="margin-left: 1100px; position : absolute; top : 100px"></div>
+    <div id="barreVie" style="margin-left: 1100px; position : absolute; top : 100px">Point de vie :<br> </div>
     <div id="inventaire_case" style="margin-left: 1100px; position : absolute; top : 200px"> Loot <br></div>
     <div id="damier"></div>
     <div id="inventaire" style="margin-left: 1100px; position : absolute; top : 700px" > Inventaire <br></div>
   
-    <div class="progress"></div>
+    <div id="dbox">
+      <div id="dboxm">Test</div>
+      <input type="button" value="OK" onclick="dbox()"/>
+    </div>
+    <button onclick ="cbox('Oui')">test</button>
+    <button onclick ="updateHealth(20)">Vie+</button>
+    <button onclick ="updateHealth(-20)">Vie-</button>
+    <div id="cbox">
+      <div id="cboxm">Testc</div>
+      <input id="butboxt" type="button" value="OK" onclick="cbox()"/>
+      <input id="butboxf" type="button" value="NOP" onclick="cbox()"/>
+    </div>
+
+
+    <style>
+      #dbox {
+        /* (A1) CENTER ON PAGE */
+        text-align: center;
+        position: fixed;
+        top: 40%; left: 50%;
+        transform: translate(-50%);
+        /* (A2) DIMENSIONS */
+        width: 400px;
+        padding: 10px;
+        /* (A3) COLORS */
+        color: #333;
+        border: 1px solid #c52828;
+        background: #ffebe1;
+        /* (A4) HIDE */
+        display: none;
+      }
+      #cbox {
+        /* (A1) CENTER ON PAGE */
+        text-align: center;
+        position: fixed;
+        top: 40%; left: 50%;
+        transform: translate(-50%);
+        /* (A2) DIMENSIONS */
+        width: 400px;
+        padding: 10px;
+        /* (A3) COLORS */
+        color: #333;
+        border: 1px solid #c52828;
+        background: #ffebe1;
+        /* (A4) HIDE */
+        display: none;
+      }
+      </style>
   </body>
 </html>
 
