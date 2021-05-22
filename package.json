@@ -1,0 +1,24 @@
+{
+  "name": "Jeux_JS",
+  "version": "1.0.0",
+  "description": "Simple game written in JS",
+  "main": "server.js",
+  "scripts": {
+    "start": "node ./server.js",
+    "test": "echo 'OK'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "x"
+  },
+  "keywords": [
+    "Simple Project"
+  ],
+  "author": "x",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "fs": "0.0.1-security"
+  }
+}
