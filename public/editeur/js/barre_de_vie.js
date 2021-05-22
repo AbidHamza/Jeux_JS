@@ -1,61 +1,57 @@
 
+function healthBar(w,h,maxHealth,color){
+	this.w = w;
+	this.h = h;
+	this.maxWidth = w;
+	this.maxHealth = maxHealth;
+	this.color=color;
+	this.health=maxHealth;
+}
 
+var healthBar1 = new healthBar (300,50,100,"green");
 
-function healthBar(){
-	var svg = d3.select('.progress')
-		.append('svg')
-		.attr('height', 100)
-		.attr('width', 500);
-
-	var states = ['completed', 'inProgress', 'started'],
-	    segmentWidth = 100,
-		currentState = 'completed';
-
-
-	var colorScale = d3.scale.ordinal()
-		.domain(states)
-		.range(['yellow', 'orange', 'green']);
-
-	svg.append('rect')
-		.attr('class', 'bg-rect')
-		.attr('rx', 10)
-		.attr('ry', 10)
-		.attr('fill', 'gray')
-		.attr('height', 15)
-		.attr('width', function(){
-			return segmentWidth * states.length;
-		})
-		.attr('x', 0);
-
-	var progress = svg.append('rect')
-					.attr('class', 'progress-rect')
-					.attr('fill', function(){
-						return colorScale(currentState);
-					})
-					.attr('height', 15)
-					.attr('width', 0)
-					.attr('rx', 10)
-					.attr('ry', 10)
-					.attr('x', 0);
-
-	progress.transition()
-		.duration(1000)
-		.attr('width', function(){
-			var index = states.indexOf(currentState);
-			return (index + 1) * segmentWidth;
-		});
-
-
-	function moveProgressBar(state){
-			progress.transition()
-				.duration(1000)
-				.attr('fill', function(){
-					return colorScale(state);
-				})
-				.attr('width', function(){
-					var index = states.indexOf(state);
-					return (index + 1) * segmentWidth;
-				});
+function updateHealth(value){
+	if(healthBar1.health+value<=100){
+		healthBar1.health += value;
+		healthBar1.w = ((healthBar1.health/healthBar1.maxHealth )*healthBar1.maxWidth);
+		console.log(healthBar1.health,healthBar1.w)
+		d3.select("#healthBar")
+			.attr("width",healthBar1.w)}
+	else{
+		healthBar1.health=100
+		healthBar1.w = ((healthBar1.health/healthBar1.maxHealth )*healthBar1.maxWidth);
+		d3.select("#healthBar")
+			.attr("width",healthBar1.w)}
+		if(healthBar1.health<30){
+			d3.select("#healthBar")
+				.style("fill","red")
+		}else{
+			if(healthBar1.health<70 && healthBar1.health>30){
+				d3.select("#healthBar")
+					.style("fill","yellow")
+			}else{
+				d3.select("#healthBar")
+					.style("fill","green")}
+			}
+		if(healthBar1.health==0 ||healthBar1.health<=0 ){
+			alert("Vous êtes mort.")
 		}
-	moveProgressBar("started")
+}
+
+function healthBarr(){
+
+	d3.select("#barreVie").append("svg").attr("id","healthBarSVG").attr("width",healthBar1.maxWidth).attr("height",healthBar1.h)
+	d3.select("#healthBarSVG")
+		.append("rect")
+		.attr("width",healthBar1.maxWidth)
+		.attr("height",healthBar1.h)
+		.style("stroke", "black");
+	d3.select("#healthBarSVG")
+		.append("rect")
+		.attr("id","healthBar")
+		.attr("width",healthBar1.w)
+		.attr("height",healthBar1.h)
+		.style("stroke","black")
+		.style("fill",healthBar1.color);
+
 }
