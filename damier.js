@@ -1,8 +1,11 @@
-var types = ["sol", "mur", "vide", "meuble", "escaliers", "porte_verrouiller", "porte_ouverte", "piège", "start"];
-var objets = [couteau,baton,armure,pillules,bandages,kit,zombie,piege_ours,piques,cle,aide1]  
+var types = ["sol", "mur", "vide", "meuble", "escaliers", "porte_verrouiller", "porte_ouverte", "piège", "start","porte_fermee"];
+var objets = [couteau,baton,armure,pillules,bandages,kit,zombie,piege_ours,piques,cle,aide1]
 var images={};  
 for(let type of types){ 
     images[type]=type+".png";}  
+
+
+//Création du Damier sur lequel reposera le niveau
 function genereDamier(rayon, nbLignes, nbColonnes) {    
     let width = nbColonnes*rayon;   
     let height = nbLignes*rayon;    
@@ -27,6 +30,8 @@ function creeCarre(x,y,rayon){
     return d;   
 }   
 
+
+// Appelle le modèle depuis le fichier JSON, et l'affiche dans le damier
 function genereModele(data,rayon, nbLignes, nbColonnes){    
             
     let width = nbColonnes*rayon;   
@@ -76,52 +81,49 @@ function genereModele(data,rayon, nbLignes, nbColonnes){
     return start;           
 }   
 const pas = 72; 
-//  
+//Déplacement droit
 function droit(){   
     var circle=d3.select("#avatar");    
-   var newx = parseInt(circle.attr("cx"))+ pas; 
+   var newx = parseInt(circle.attr("x"))+ pas; 
    var width = d3.select("#damier").select("svg").attr("width");    
    var r = parseInt(circle.attr("r"));  
-   if (Math.min(newx,width-r)<width-r){ 
-    circle.attr("cx",Math.min(newx,width-r));   
-    }   
-    
+    if (Math.min(newx,width-r)<width-r){ 
+        circle.attr("x",Math.min(newx,width-r));   
+        }
 }   
-//q 
+//Déplacement bas 
 function bas(){     
    var circle=d3.select("#avatar"); 
-   var newy = parseInt(circle.attr("cy")) + pas;    
-   //console.log(newy);   
+   var newy = parseInt(circle.attr("y")) + pas;       
    var height = d3.select("#damier").select("svg").attr("height");  
    var r = parseInt(circle.attr("r"));  
-   if (Math.min(newy,height-r)<height-r){   
-    circle.attr("cy",Math.min(newy,height-r));  
- }  
+    if (Math.min(newy,height-r)<height-r){   
+        circle.attr("y",Math.min(newy,height-r)); 
+        }
     
 }   
-//q 
+//Déplacement gauche 
 function gauche(){  
     var circle=d3.select("#avatar");    
-    var newx = parseInt(circle.attr("cx"))-(pas);    
-    //console.log(newx);    
+    var newx = parseInt(circle.attr("x"))-(pas);        
     var width = d3.select("#damier").select("svg").attr("width");    
     var r = parseInt(circle.attr("r"));  
     if (Math.min(newx,width-r)>0){   
-        circle.attr("cx",Math.min(newx,width-r));    
+        circle.attr("x",Math.min(newx,width-r));    
     }  
 }   
-//x 
+//Déplacement haut 
 function haut(){    
     var circle=d3.select("#avatar");    
-    var newy = parseInt(circle.attr("cy")) - (pas);  
-    //console.log(newy);   
+    var newy = parseInt(circle.attr("y")) - (pas);     
     var height = d3.select("#damier").select("svg").attr("height");  
     var r = parseInt(circle.attr("r"));  
     if (Math.min(newy,height-r)>0){  
-        circle.attr("cy",Math.min(newy,height-r));   
+        circle.attr("y",Math.min(newy,height-r));   
     }   
 }   
 
+//Génère le damier pour l'inventaire
 function genereInventaire(rayon,nbLignes,nbColonnes){
     let width = nbColonnes*rayon;   
     let height = nbLignes*rayon;
@@ -143,7 +145,7 @@ function genereInventaire(rayon,nbLignes,nbColonnes){
   } 
 }
 
-
+//Génère le damier pour le Loot
 function genereInventaireCase(rayon,nbLignes,nbColonnes){
     let width = nbColonnes*rayon;   
     let height = nbLignes*rayon;
@@ -164,54 +166,3 @@ function genereInventaireCase(rayon,nbLignes,nbColonnes){
         } 
   } 
 }
-
-/*
-function genereModele(data,rayon, nbLignes, nbColonnes){    
-    
-            
-    let width = nbColonnes*rayon;   
-    let height = nbLignes*rayon;        
-    var img = "images/" 
-    var svg = d3.select("#damier").select("svg").attr("width", width).attr("height", height);               
-    svg.selectAll("image").remove() 
-    for(var x=0; x<nbColonnes; x++){   
-        var left=-1;
-        var right=-1;
-        var up=-1;
-        var down=-1; 
-        for(var y=0; y<nbLignes; y++){  
-            var rotate ="";
-            
-            if (x>0 && x<nbColonnes-1){
-                left = data[y][x-1];
-                right = data[y][x+1];
-            }
-            if (y>0 && y<nbLignes-1){
-                up = data[y+1][x];
-                down = data[y-1][x];
-            }
-            if(data[y][x]==6 && up==1 && down==1){
-                rotate = 'translate(' +rayon+ "," +0+ ') rotate(90, '+x*rayon+','+y*rayon+')';
-            }
-            if(data[y][x]==5 && left==1 && right==1){
-                rotate = 'translate(' +rayon+ "," +0+ ') rotate(90, '+x*rayon+','+y*rayon+')';
-            }
-            svg.append("image")
-            .attr("id","D"+y) 
-            .attr("xlink:href", img+types[data[y][x]]+".png")   
-            .attr("width", rayon)   
-            .attr("height", rayon)  
-            .attr("x",x*rayon)  
-            .attr("y",y*rayon)
-            .attr('transform',rotate); 
-            if(data[y][x]==8){ 
-                var start = [x*rayon,y*rayon]   
-            }   
-                
-            
-        }   
-    }   
-    
-    return start;           
-}   
-*/
