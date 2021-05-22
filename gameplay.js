@@ -1,5 +1,8 @@
 
 
+
+
+//Diverse intéraction avec les différents types de cases,permets d'appeler les fonctions liées.
 function interaction(data,im){
     if (data.type==3){
        genereObjet(data);
@@ -8,22 +11,22 @@ function interaction(data,im){
        genereEnnemi(data);
     }
     if (data.type==5){
-       ouverturePorte(data,im);
+        devPorte(data,im);
     }
     if (data.type==6){
         fermeturePorte(data,im);
     }
-
+    if (data.type==9){
+        ouverturePorte(data,im);
+    }
     if (data.type==4){
         dbox("Vous avez réussi à atteindre l'escalier de l'étage, mais vous ignorez ce qui vous attends plus bas...")
-        niveauSuivant();
     }
 }
 
 
-var obj ={}
-var im = ""
 
+// Permet de récupérer les objets provenant du Loot
 function getItem(objet,idl){
     let o = objets[objet];
     for(let p=1;p<11;p++){
@@ -37,7 +40,7 @@ function getItem(objet,idl){
             d3.select("#I"+p).attr('objet',o.nom);
             d3.select("#invent").append("image")
                 .attr("id","IM"+p)
-                .attr("xlink:href","images/sol.png")
+                .attr("xlink:href","images/"+o.nom+".png")
                 .attr("width", 100)
                 .attr("height", 100)
                 .attr("x",x)
@@ -62,7 +65,7 @@ function getItem(objet,idl){
     dbox("Inventaire plein")
 }
 
-
+// Fait apparaitre les objets présents dans un meuble
 function genereObjet(data){
     obj = data
     if (Object.keys(data).length>=1)
@@ -84,6 +87,7 @@ function genereObjet(data){
         }
     }
 
+//Fonction qui récupère les ennemis présents sur les cases pièges, et gère directement les intéractions avec le joueur et son équipement
 function genereEnnemi(data){
     var damier = data;
     if(damier.objet1!=null)
@@ -101,6 +105,7 @@ function genereEnnemi(data){
             .attr("height", 100)
             .attr("x",x)
             .attr("y",y);
+            //Zombie
             if(value==6){
                 for(i=1;i<11;i++){
                     if(d3.select('#I'+i).attr('objet')=='couteau'){
@@ -114,9 +119,10 @@ function genereEnnemi(data){
                         return console.log("attaque évitée")
                     }
                 }
-                updateHealth(zombie.valeur);
+                updateHealth(zombie.valeur); //Appel de fonction qui modifie la vie du joueur
                 dbox("Un zombie vient de vous mordre, courez !")
             }
+            //Piège à ours
             if(value==7){
                 for(i=1;i<11;i++){
                     if(d3.select('#I'+i).attr('objet')=='baton'){
@@ -129,10 +135,11 @@ function genereEnnemi(data){
                         return console.log("attaque évitée")
                     }
                 }
-                updateHealth(piege_ours.valeur);
+                updateHealth(piege_ours.valeur);//Appel de fonction qui modifie la vie du joueur
                 dbox("Un piège à ours vient de se refermer sur votre jambe, vous réussisez à sortir cette dernière, mais elle vous fait affreusement mal")
 
             }
+            //Piques
             if(value==8){
                 for(i=1;i<11;i++){
                     if(d3.select('#I'+i).attr('objet')=='Armure'){
@@ -145,7 +152,7 @@ function genereEnnemi(data){
                         return console.log("attaque évitée")
                     }
                 }
-                updateHealth(piques.valeur);
+                updateHealth(piques.valeur);//Appel de fonction qui modifie la vie du joueur
                 dbox("Vous êtes tombés sur des piques, vous réussisez à sortir, mais vous avec de nombreuses blessures !")
             }
                 
@@ -155,15 +162,7 @@ function genereEnnemi(data){
         }
 
 
-
-
-function deleteByValue(value,position) {
-    for (let key in position) {
-        if (position[key] == value) delete position[key];
-    }
-}
-
-
+//Fonction permettant l'ouverture des portes déjà déverouillées
 function ouverturePorte(data,ime){
     console.log(data)
     var choix = confirm("Voulez-vous ouvrir la porte?")
@@ -173,37 +172,52 @@ function ouverturePorte(data,ime){
         d3.select("#D"+ime).attr("href","images/porte_ouverte.png")
     }
 }
+
+//Fonction permettant de fermer les portes
 function fermeturePorte(data,ime){
     console.log("D"+ime)
     var choix = confirm("Voulez-vous fermer la porte?")
     if (choix){
-        data.type = 5
+        data.type = 9
         console.log("porte fermée")
         d3.select("#D"+ime).attr("href","images/porte_verrouiller.png")
     }
 }
+
+//Fonction pour les aides
 function aide(on){
     dbox(on.texte)
 }
+
+//Fonction qui permet de supprimer les objets de soins après utilisation
 function deleteObj(idi,ido){
     d3.select(idi).remove()
     d3.select(ido).attr('objet',null)
 }
 
+//Fonction pour nettoyer l'inventaire de Loot à chaque fois qu'on sort d'une case meuble  
 function clearLoot(){
     var svg =d3.select("#loot")
     svg.selectAll("image").remove();
 }
 
-function devPort(){
+//Fonction pour déverouiller les portes avec une clé
+function devPorte(data,ime){
     for(i=1;i<11;i++){
         if(d3.select('#I'+i).attr('objet')=='cle'){
-            let choix  = confirm("Voulez-vous déverouiller la porte?")
+            let choix  = confirm("Voulez-vous déverouiller la porte ?")
             if (choix){
-
-                dbox("Vous avez déverouillé la porte")
+                data.type = 6
+                d3.select("#D"+ime).attr("href","images/porte_ouverte.png")
+                dbox("Vous avez déverouillé la porte grâce à la clé !")
+                return console.log("Porte déverouillée")
+            }else{
+                return dbow("Vous avez choisi de ne pas ouvrir la porte")
             }
-    }
+        }else{
+                 return dbox("Vous n'avez pas la clé pour ouvirir cette porte ! ")
+            }
+   
 }
 
 }
@@ -221,28 +235,7 @@ function dbox(msg) {
   dbox.style.display = (msg === undefined) ? "none" : "block";
 }
 
-function cbox(msg) {
-    // (B1) GET ELEMENTS
-    var boxc = document.getElementById("cbox"),
-        boxmc = document.getElementById("cboxm");
-        butboxt = document.getElementById("butboxt")
-        butboxf = document.getElementById("butboxf")
-    // (B2) SHOW/HIDE
-    boxc.style.display = (msg === undefined) ? "none" : "block";
-    boxmc.innerHTML = (msg === undefined) ? "" : msg ;
-        butboxt.addEventListener("click", function(){
-            let choix = true
-            cbox();
-            return choix;
-        })
-        butboxf.addEventListener("click", function(){
-            let choix = false
-            cbox();
-            return choix;
-        })
 
-
-  }
 
 
 
