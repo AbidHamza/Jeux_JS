@@ -1,5 +1,5 @@
 # Jeux_JS
-Ouvrir un terminal dans ce dossier
-Executer la commande npm start
-Dans un navigateur, aller à l'url http://localhost:8000/
+\n Ouvrir un terminal dans ce dossier
+\n Executer la commande npm start
+\n Dans un navigateur, aller à l'url http://localhost:8000/
 
