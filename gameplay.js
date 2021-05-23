@@ -94,6 +94,7 @@ function genereEnnemi(data){
         for( let p=1;p<Object.keys(damier).length;p++){
             var key=Object.keys(damier)[p];
             var value = damier[key]
+            console.log(value)
             console.log(objets[value])
             var x = d3.select("#L"+p).attr("x");
             var y = d3.select("#L"+p).attr("y");
@@ -222,15 +223,20 @@ function devPorte(data,ime){
 
 }
 
+function tutorial(){
+    alert("Vous vous reveillez, il fait nuit noire. La lumière refuse de s'allumer.Déboussollé, vous vous rappelez pourquoi vous êtes ici.")
+    alert("Vous prenez votre Lampe torche, et relisez la lettre de votre tante : ")
+    alert("Bonjour Horatio, ton grand-oncle  Wellesley est mort. Tu saurais gré de venir à son enterrement, pour changer de ton irrespect habituel. Je t'ai réservé un hôtel très tranquille, on m'a dit qu'il n'y avait qu'une seule autre personne en plus de l'hôtesse. Signé : Tante Joséphine")
+    alert("Vous entendez un bruit et vous levez. Vous voyez un vieux papier dépassé du meuble dans votre chambre")
+    alert("Tutoriel : Vous pouvez vous déplacer avec ZQSD, cliquez sur un objet dans la partie butin pour le placer dans votre inventaire")
+    alert("Explorez cet hôtel sinistre, mais attention à ce qui peut attendre dans ces couloirs,l'ombre de la haine n'est jamais loin")
+}
 
-
-// (B) TOGGLE DIALOG BOX
 function dbox(msg) {
-  // (B1) GET ELEMENTS
+
     let dbox = document.getElementById("dbox"),
         dboxm = document.getElementById("dboxm");
- 
-  // (B2) SHOW/HIDE
+
   dboxm.innerHTML = (msg === undefined) ? "" : msg ;
   dbox.style.display = (msg === undefined) ? "none" : "block";
 }

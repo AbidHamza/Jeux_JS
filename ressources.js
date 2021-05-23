@@ -1,6 +1,6 @@
-var types = ["sol", "mur", "vide", "meuble", "escaliers", "porte_verrouiller", "porte_ouverte", "piège", "start"];
-var objets = [couteau,baton,armure,pillules,bandages,kit,zombie,piege_ours,piques,cle,aide1]
 
+
+var obj ={}
 
 //Objet de Soin
 function objectSoin(type,nom,valeur,image){
@@ -43,13 +43,13 @@ var piege_ours = new objectEnnemi('piege_ours',-15,'alert','image')
 var piques = new objectEnnemi('piques',-15,'alert','image')
 
 
-function objectcle(type,couleur,image){
+function objectcle(type,nom,image){
   this.type = type
-  this.couleur=couleur
+  this.nom=nom
   this.image=image
 }
 
-var cle = new objectcle ('cle','bleu' ,'image')
+var cle = new objectcle ('cle','cle' ,'image')
 
 function objectAide(nom,type,texte){
   this.nom=nom
@@ -58,6 +58,6 @@ function objectAide(nom,type,texte){
 }
 
 var aide1 = new objectAide('aide1','aide','Cet hotel est lugubre, 2 soirs que je dors ici, et il y a en permance des bruits étrange en dehors de ma chambre, je ne peux plus, je vais aller voir')
-
-
-
+var aide2 = new objectAide('aide2','aide',"Je suis parvenu à me cacher ici, mais j'entends ses pas lourds de l'autre côté... Si vous lisez ces lignes sachez q.e  il ar-rive ! A l'a.. ! ")
+var aide3 = new objectAide('aide3','aide',"Voila plusieurs années que je cherche la dernière demeure de Jean Nicolas Rozou, communément appelé par ses hommes Ozou. Ce général de division de la Grande Armée aurait séjourné ici avec Bonarparte, mais son nom n'est plus jamais mensionné ensuite. On dit qu'il était rude et cruel, mais que c'était un excellent meneur d'hommes.")
+var aide4 = new objectAide('aide4','aide',"IL M'A TOUT PRIS, MA REPUTATION, MES INCAPABLES SOLDATS, MA VIE ! IL PAIERAT ET SES ENFANTS AUSSI, ET LEUR ENFANTS AUSSI, JUSQU'A QUE LE SOLEIL ROUGEOIS COMME LE SANG DANS MES VEINES ! ")
