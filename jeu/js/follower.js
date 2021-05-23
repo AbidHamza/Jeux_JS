@@ -1,5 +1,4 @@
-//var types = ["sol", "mur", "vide", "meuble", "escaliers", "porte_verrouiller", "porte_ouverte", "piège", "start"];  
-//               0      1      2        3           4               5                  6              7        8
+//fonction qui converti le json en liste de liste retenant seulement les types des cases
 function genereNode(data){
     let nodes = []
     for(d1 of data){
@@ -12,6 +11,8 @@ function genereNode(data){
     }
     return nodes;
 }
+
+//fonction qui retourne l'ètat d'une arrête 0 pour un sol, 1 pour une porte ouverte, -1 pour une porte fermé
 function jonction(vers){
     if(vers!=1 && vers!=5 && vers!=6 && vers!=9){
         return 0;
@@ -24,23 +25,27 @@ function jonction(vers){
     }
 }
 
+//fonction qui retourne les coordonées de la case voisine de droite
 function goRight(vers,l,c){
     return [l,c+1]
 }
 
+//fonction qui retourne les coordonées de la case voisine de gauche
 function goLeft(vers,l,c){
     return [l,c-1];
 }
 
+//fonction qui retourne les coordonées de la case voisine du haut
 function goUp(vers,l,c){
     return [l-1,c];
 }
 
+//fonction qui retourne les coordonées de la case voisine du bas
 function goDown(vers,l,c){
     return [l+1,c];
 }
 
-
+//fonction qui crée une structure de graphe à partir d'une liste de liste contenant les types de cases
 function graphe(data){
     let json = {};
     let depart;let droite;let gauche;let haut;let bas;
@@ -75,16 +80,15 @@ function graphe(data){
     chemins=[]
     graph=json;
 }
+
+//fonction qui génère la position du poursuivant aléatoirement
 function spawn(data){
     var keys = [];
     for(var key in graph){
     keys.push(key);
     }
     var index_follower =  Math.floor(Math.random() * keys.length);
-    //console.log(index_follower);
-    //console.log(keys[index_follower]);
     var follower_start = keys[index_follower].split(',')
-   //console.log(follower_start);
     while(data[follower_start[0]][follower_start[1]]==5){
         index_follower =  Math.floor(Math.random() * keys.length)
         follower_start = keys[index_follower].split(',')
@@ -95,6 +99,8 @@ function spawn(data){
 
 let chemins = []
 
+//fonction récursive qui depuis la position du poursuivant cherche l'avatar avec une fonction de coût et parcours le graphe
+//si lálgorithme trouve la position d'arrivée elle retourne le chemin
 function deepthsearch(pos_avatar,pos_follower,hist){
     if(pos_follower==undefined || graph[pos_follower]==undefined){
         console.log("pb graphe")
@@ -103,24 +109,31 @@ function deepthsearch(pos_avatar,pos_follower,hist){
         let casevoisine = {}
         let distanceMax = Math.sqrt(Math.pow(pos_avatar[0] - pos_follower[0], 2) + Math.pow(pos_avatar[1] - pos_follower[1], 2))
         for (let i = 0; i < graph[pos_follower].length; i++) {
+            //calcule la distance entre la position actuelle du poursuivant et la position du joueur pour chacune des cases voisines
             let distance = Math.sqrt(Math.pow(pos_avatar[0] - graph[pos_follower][i][0][0], 2) + Math.pow(pos_avatar[1] - graph[pos_follower][i][0][1], 2))
+            //s'il trouve une distance infieur à la distanceMax il garde cette casevoisine
             if (distance < distanceMax) {
                 casevoisine[0] = graph[pos_follower][i][0]
                 casevoisine[1] = distance
             }else{
-                //mouvrandom(graphe[pos_follower])
+                //sinon il ferait un pas aléatoire parmis ses voisins
+                //mouvrandom(pos_follower)
             }
 
         }
+        //évite de retourner au même endroit en ne gardant que les cases par où il n est pas deja passé
         if (!hist.includes(casevoisine[0])) {
             hist.push(casevoisine[0])
+
             if (JSON.stringify(casevoisine[0]) === JSON.stringify(pos_avatar)) {
+                //s'il arrive jusqu`à l'avatar il retourne le bon chemin
                 chemins=[]
                 const iterator = hist.values();
                 for(const value of iterator){
                     chemins.push(value)
                 }
             } else {
+                //sinon il continue la recherche á partir de sa nouvelle position
                 deepthsearch(pos_avatar, casevoisine[0], hist)
             }
             hist.pop()
@@ -129,6 +142,8 @@ function deepthsearch(pos_avatar,pos_follower,hist){
 
 }
 let decalage=0
+
+//fonction qui effectue un pas du poursuivant par rapport au chemin précédemment trouver
 function mouv() {
     if(decalage>=2){
         decalage=0
@@ -154,7 +169,7 @@ function mouv() {
     }
 
 }
-
+//fonction qui génère un mouvement aléatoire du poursuivant sur une de ses cases voisines
 function mouvrandom(position){
     let rd = parseInt(Math.random()*position.length-1)
     let circle = d3.select("#follower");
