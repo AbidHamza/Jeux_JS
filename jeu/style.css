@@ -1,0 +1,53 @@
+#barrevie{
+    font-weight: bold;
+    color : white;
+    text-align: center;
+    margin-left: 1200px;
+     position : absolute;
+      top : 100px
+}
+
+
+#inventaire_case{
+    font-weight: bold;
+    color : white;
+    text-align: center;
+    margin-left: 1100px;
+     position : absolute ;
+      top : 200px;
+}
+
+#inventaire{
+    font-weight: bold;
+    color : white;
+    text-align: center;
+    margin-left: 1100px;
+    position : absolute;
+    top : 700px
+}
+
+#dbox {
+    box-shadow: 10px 5px 5px rgb(0, 0, 0);  
+    text-align: center;
+    position: fixed;
+    top: 40%; left: 50%;
+    transform: translate(-50%);
+    width: 400px;
+    padding: 10px;
+    color: rgb(255, 255, 255);
+    border: 5px solid #000000;
+    background-color: #cccccc;
+    background-image: radial-gradient(rgb(0, 0, 0), rgb(51, 50, 50), rgb(78, 78, 78));
+    display: none;
+  }
+  
+body{
+    background-image: url('images/background1.png');
+}
+#choixlvl{
+    text-align: center;
+}
+
+
+
+
