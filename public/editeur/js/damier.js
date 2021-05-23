@@ -97,7 +97,7 @@ function genereDamier(rayon, nbLignes, nbColonnes) {
                     S'il s'agit de l'ajout d'un énigme, je vais tout simplement ajouté ce qui
                     est stocké dans le sessionStorage préalablement et le mettre 
                     dans un attribut.
-                    l faut savori que ce qui est stocké dans le sessionStorage est un objet JSON contenant 
+                    il faut savoir que ce qui est stocké dans le sessionStorage est un objet JSON contenant 
                     la question et réponse.
                     */
                     rect.attr('enigme',sessionStorage.getItem('enigme'));
